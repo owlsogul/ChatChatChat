@@ -1,4 +1,4 @@
-package cau.wintercamp.chatchat.clinet;
+package cau.wintercamp.chatchat.client;
 
 public class Client {
 
