@@ -14,21 +14,26 @@ public class Client {
 		client = new Client();
 	}
 	
-	
+	public UIMain uiMain;
 	
 	public Socket soc;
 	public SocketIO socIo;
 	public Translator translator;
+	public boolean isConnected = false;
 	
 	public String ip = "localhost";
 	public int port = 7777;
 	
 	public Client(){
 		
+		uiMain = new UIMain(this);
+		
 		try {
+			//TODO: 연결을 계혹 확인하는 쓰레드 만들기
 			soc = new Socket(ip, port);
 			socIo = new SocketIO(soc);
 			translator = new Translator();
+			isConnected = true;
 			if (socIo.init()) {
 				System.out.println("Sucess Load Socket IO");
 			}
@@ -41,6 +46,13 @@ public class Client {
 		
 	}
 	
+	public String sendData(Data data){
+		return socIo.sendRawData(translator.translateDataToJSONString(data));
+	}
+	
+	public Data receiveData(){
+		return translator.tranlateJSONToData(socIo.receiveRawData());
+	}
 	
 	
 }
