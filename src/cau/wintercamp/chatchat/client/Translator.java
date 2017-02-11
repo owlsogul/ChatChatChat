@@ -19,15 +19,15 @@ public class Translator {
 			
 			default: return null;
 			case Data.DATATYPE_REGISTER:
-				String id = (String) jObject.get("id");
-				String pw = (String) jObject.get("pw");
+				String id = (String) jObject.get("user_id");
+				String pw = (String) jObject.get("user_pw");
 				boolean same = (int) jObject.get("bool") == 1 ? true : false;
 				DataRegister dataRegister = new DataRegister(id, pw, same);
 				return dataRegister;
 				
 			case Data.DATATYPE_LOGIN:
-				id = (String) jObject.get("id");
-				pw = (String) jObject.get("pw");
+				id = (String) jObject.get("user_id");
+				pw = (String) jObject.get("user_pw");
 				same = (int) jObject.get("bool") == 1 ? true : false;
 				DataLogin dataLogin = new DataLogin(id, pw, same);
 				return dataLogin;
@@ -35,7 +35,8 @@ public class Translator {
 			case Data.DATATYPE_CHAT:
 				String roomId = (String) jObject.get("room_id");
 				String message = (String) jObject.get("message");
-				DataChat dataChat = new DataChat(roomId, message);
+				String userId = (String) jObject.get("user_id");
+				DataChat dataChat = new DataChat(roomId, message, userId);
 				return dataChat;
 			}
 
@@ -45,14 +46,34 @@ public class Translator {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public String translateDataToJSONString(Data data){
 		JSONObject jObject = new JSONObject();
 		
 		int type = (int) jObject.get("type");
 		switch (type){
 		default: return null;
+		
 		case Data.DATATYPE_REGISTER:
-			jObject.put("", value)
+			DataRegister dataRegister = (DataRegister) data;
+			jObject.put("user_id", dataRegister.getUserId());
+			jObject.put("user_pw", dataRegister.getUserPw());
+			jObject.put("bool", dataRegister.getBool());
+			break;
+			
+		case Data.DATATYPE_LOGIN:
+			DataLogin dataLogin = (DataLogin) data;
+			jObject.put("user_id", dataLogin.getUserId());
+			jObject.put("user_pw", dataLogin.getUserPw());
+			jObject.put("bool", dataLogin.getBool());
+			break;
+			
+		case Data.DATATYPE_CHAT:
+			DataChat dataChat = (DataChat) data;
+			jObject.put("room_id", dataChat.getRoomId());
+			jObject.put("message", dataChat.getMessage());
+			jObject.put("user_id", dataChat.getMessage());
+			break;
 		}
 		
 		return jObject.toJSONString();

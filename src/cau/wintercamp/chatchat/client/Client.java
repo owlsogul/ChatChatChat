@@ -14,8 +14,11 @@ public class Client {
 		client = new Client();
 	}
 	
+	
+	
 	public Socket soc;
 	public SocketIO socIo;
+	public Translator translator;
 	
 	public String ip = "localhost";
 	public int port = 7777;
@@ -25,6 +28,7 @@ public class Client {
 		try {
 			soc = new Socket(ip, port);
 			socIo = new SocketIO(soc);
+			translator = new Translator();
 			if (socIo.init()) {
 				System.out.println("Sucess Load Socket IO");
 			}
