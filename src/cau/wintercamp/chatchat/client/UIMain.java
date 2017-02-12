@@ -10,6 +10,7 @@ public class UIMain extends JFrame{
 	
 	public Client client;
 	
+	public UILoadingPage loadingPage;
 	public UILoginPage loginPage;
 	public UIChatPage  chatPage;
 	
@@ -23,17 +24,32 @@ public class UIMain extends JFrame{
 	
 	public void init(){
 		
-		
 		this.getContentPane().setLayout(new GridLayout(1, 1));
 		
-		this.loginPage = new UILoginPage(this);
-		this.getContentPane().add(loginPage);
-		
+		this.loadingPage = new UILoadingPage(this);
+		this.getContentPane().add(loadingPage);
 		
 		this.setVisible(true);
 		this.setSize(400,400);
 		this.setResizable(false);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
 	}
+	
+	public void loadingComplete(){
+		
+		this.getContentPane().remove(loadingPage);
+		loadingPage = null;
+		
+		loginPage = new UILoginPage(this);
+		this.getContentPane().add(loginPage);
+		this.revalidate();
+		this.repaint();
+		
+		
+		
+	}
+	
+	
 
 }

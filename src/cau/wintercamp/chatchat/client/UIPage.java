@@ -11,5 +11,4 @@ public class UIPage extends JPanel{
 		this.main = main;
 	}
 	
-	
 }
