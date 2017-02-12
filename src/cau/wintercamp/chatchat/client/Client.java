@@ -56,7 +56,7 @@ public class Client {
 					}
 				}
 				System.out.println("try to change page");
-				client.uiMain.loadingComplete();
+				client.uiMain.loginComplete("1234");
 			}
 		});
 		

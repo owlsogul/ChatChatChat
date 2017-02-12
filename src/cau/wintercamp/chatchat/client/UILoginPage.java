@@ -81,6 +81,7 @@ public class UILoginPage extends UIPage implements ActionListener{
 							DataLogin data = (DataLogin) main.client.receiveData();
 							if (data.getBool()){
 								System.out.println("return true");
+								main.loginComplete(idField.getText());
 							}
 							else {
 								System.out.println("return false");

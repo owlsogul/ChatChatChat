@@ -50,17 +50,25 @@ public class UIMain extends JFrame{
 	
 	public String userId;
 	public void loginComplete(String userId){
+		System.out.println(userId + " 로 로그인이 완료되었습니다.");
 		this.userId = userId;
 		
-		this.getContentPane().remove(loginPage);
-		loginPage = null;
+		//For Test
+		if (loadingPage != null){
+			this.getContentPane().remove(loadingPage);
+			loadingPage = null;
+		}
+		//
 		
-		chatPage = new UIChatPage(this);
+		if (loginPage != null){
+			this.getContentPane().remove(loginPage);
+			loginPage = null;
+		}
+		
+		chatPage = new UIChatPage(this, userId);
 		this.getContentPane().add(chatPage);
 		this.revalidate();
 		this.repaint();
-		
-		
 	}
 	
 	
