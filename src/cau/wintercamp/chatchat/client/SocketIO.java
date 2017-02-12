@@ -44,7 +44,9 @@ public class SocketIO {
 	 * */
 	public String receiveRawData() {
 		try {
-			return reader.readLine();
+			String ret = reader.readLine();
+			System.out.println("SocketIO: Read " + ret);
+			return ret;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
@@ -56,6 +58,7 @@ public class SocketIO {
 	 * @return 서버로 보낸 String
 	 * */
 	public String sendRawData(String raw){
+		System.out.println("SocketIO: Send " + raw);
 		writer.println(raw);
 		return raw;
 	}
@@ -66,6 +69,7 @@ public class SocketIO {
 	 * */
 	public boolean closeStream(){
 		try {
+			System.out.println("SocketIO: Close");
 			writer.close();
 			reader.close();
 			return true;

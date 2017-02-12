@@ -46,6 +46,19 @@ public class UIMain extends JFrame{
 		this.revalidate();
 		this.repaint();
 		
+	}
+	
+	public String userId;
+	public void loginComplete(String userId){
+		this.userId = userId;
+		
+		this.getContentPane().remove(loginPage);
+		loginPage = null;
+		
+		chatPage = new UIChatPage(this);
+		this.getContentPane().add(chatPage);
+		this.revalidate();
+		this.repaint();
 		
 		
 	}
