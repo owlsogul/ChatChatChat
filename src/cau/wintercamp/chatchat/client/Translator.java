@@ -50,7 +50,8 @@ public class Translator {
 	public String translateDataToJSONString(Data data){
 		JSONObject jObject = new JSONObject();
 		
-		int type = (int) jObject.get("type");
+		int type = data.getDataType();
+		jObject.put("type", type);
 		switch (type){
 		default: return null;
 		
