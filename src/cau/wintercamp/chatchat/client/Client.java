@@ -2,7 +2,6 @@ package cau.wintercamp.chatchat.client;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.net.SocketAddress;
 import java.net.UnknownHostException;
 
 /**
@@ -11,6 +10,7 @@ import java.net.UnknownHostException;
  * */
 public class Client {
 
+	//TODO  중간중간에 연결끊어진거 확인!
 	public static Client client;
 	public static void main(String[] args) {
 		client = new Client();

@@ -1,11 +1,14 @@
 package cau.wintercamp.chatchat.client;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class UIChatPage extends UIPage{
+public class UIChatPage extends UIPage implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 
@@ -48,7 +51,52 @@ public class UIChatPage extends UIPage{
 		this.add(chatField);
 		this.add(enterButton);
 		
+		this.enterButton.addActionListener(this);
+		this.enterButton.setName("enter");
 		
+		Thread receiver = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				System.out.println("Receiver Thread Run");
+				Data data = main.client.receiveData();
+				if (data instanceof DataChat){
+					DataChat chat = (DataChat) data;
+					System.out.println("receive chat data");
+					System.out.println(chat.getUserId() + ":" + chat.getMessage());
+					String msg = chat.getUserId() + ":" + chat.getMessage();
+					chatArea.append(msg);
+				}
+				else {
+					System.out.println("receive non chat data");
+				}
+			}
+		});
+		receiver.start();
+		System.out.println("Receiver Thread Start");
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent event) {
+		if (event.getSource() instanceof JButton){
+			JButton button = (JButton) event.getSource();
+			if (button.getName().equals("enter")){
+				System.out.println("User press enter button");
+				if (chatField.getText().length() > 0){
+					DataChat data = new DataChat("room", chatField.getText(), userId);
+					Thread thread = new Thread(new Runnable() {
+						
+						@Override
+						public void run() {
+							System.out.println("Sending Thread: Start");
+							main.client.sendData(data);
+							System.out.println("Sending Thread: Success Send Message");
+						}
+					});
+					thread.start();
+				}
+			}
+		}
 	}
 
 }
