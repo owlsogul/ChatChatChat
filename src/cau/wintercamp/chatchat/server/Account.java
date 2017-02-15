@@ -2,12 +2,12 @@ package cau.wintercamp.chatchat.server;
 
 public class Account {
 
-	public void register(String id, String pw, boolean same) {
+	public void register() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void login(String id, String pw, boolean same) {
+	public void login() {
 		// TODO Auto-generated method stub
 		
 	}

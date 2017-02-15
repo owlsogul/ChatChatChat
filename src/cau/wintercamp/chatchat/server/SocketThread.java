@@ -16,7 +16,6 @@ public class SocketThread implements Runnable{
 	public BufferedReader br;
 	public PrintWriter pw;
 	
-	ChatManager c_manager = new ChatManager();
 	
 	public SocketThread(Socket socket) {
 		
@@ -44,8 +43,7 @@ public class SocketThread implements Runnable{
 			String data = br.readLine();
 			if (data != null) {
 				
-				c_manager.saveData(data);
-				c_manager.whereToGo(data);
+				ChatManager c_manager = new ChatManager(data);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
