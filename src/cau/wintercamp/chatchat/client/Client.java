@@ -17,7 +17,6 @@ public class Client {
 	}
 	
 	public UIMain uiMain;
-	
 	public Socket soc;
 	public SocketIO socIo;
 	public Translator translator;
@@ -28,6 +27,7 @@ public class Client {
 	
 	public Client(){
 		
+		Client me = this;
 		uiMain = new UIMain(this);
 		
 		System.out.println("try to start thread: connect to server");
@@ -39,7 +39,7 @@ public class Client {
 					System.out.println("Thread Run");
 					try {
 						soc = new Socket(ip, port);
-						socIo = new SocketIO(soc);
+						socIo = new SocketIO(me, soc);
 						translator = new Translator();
 						isConnected = true;
 						System.out.println("Thread: connected to Server");
@@ -52,16 +52,19 @@ public class Client {
 						}
 						
 					} catch (UnknownHostException e) {
+						//e.printStackTrace();
 					} catch (IOException e) {
+						//e.printStackTrace();
 					}
 				}
 				System.out.println("try to change page");
-				client.uiMain.loginComplete("1234");
+				client.uiMain.loadingComplete();
 			}
 		});
 		
 		thread.start();
 	}
+	
 	
 	public String sendData(Data data){
 		return socIo.sendRawData(translator.translateDataToJSONString(data));
@@ -69,6 +72,22 @@ public class Client {
 	
 	public Data receiveData(){
 		return translator.tranlateJSONToData(socIo.receiveRawData());
+	}
+
+
+	public void handleData(String receiveRawData) {
+		Data data = translator.tranlateJSONToData(receiveRawData);
+		switch (data.getDataType()){
+		case Data.DATATYPE_REGISTER:
+			this.uiMain.receiveRegisterData((DataRegister)data);
+			return;
+		case Data.DATATYPE_LOGIN:
+			this.uiMain.receiveLoginData((DataLogin)data);
+			return;
+		case Data.DATATYPE_CHAT:
+			this.uiMain.receiveChatData((DataChat)data);
+			return;
+		}
 	}
 	
 	

@@ -12,13 +12,16 @@ import java.net.Socket;
  * @author owlsogul
  *
  */
-public class SocketIO {
+public class SocketIO implements Runnable{
 
 	public Socket soc;
+	public Client client;
 	public BufferedReader reader;
 	public PrintWriter writer;
+	public Thread readerThread;
 	
-	public SocketIO(Socket soc){
+	public SocketIO(Client client, Socket soc){
+		this.client = client;
 		this.soc = soc;
 	}
 	
@@ -29,8 +32,10 @@ public class SocketIO {
 	 * */
 	public boolean init(){
 		try {
+			this.readerThread = new Thread(this);
 			this.reader = new BufferedReader(new InputStreamReader(soc.getInputStream()));
 			this.writer = new PrintWriter(soc.getOutputStream(), true);
+			this.readerThread.start();
 			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -60,6 +65,7 @@ public class SocketIO {
 	public String sendRawData(String raw){
 		System.out.println("SocketIO: Send " + raw);
 		writer.println(raw);
+		writer.flush();
 		return raw;
 	}
 	
@@ -70,6 +76,7 @@ public class SocketIO {
 	public boolean closeStream(){
 		try {
 			System.out.println("SocketIO: Close");
+			readerThread.interrupt();
 			writer.close();
 			reader.close();
 			return true;
@@ -77,6 +84,20 @@ public class SocketIO {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	@Override
+	public void run() {
+		while (true){
+			try {
+				System.out.println("Runnig " + reader.ready());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			String some = receiveRawData();
+			client.handleData(some);
+		}
+		
 	}
 	
 	

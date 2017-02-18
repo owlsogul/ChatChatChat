@@ -70,7 +70,22 @@ public class UIMain extends JFrame{
 		this.revalidate();
 		this.repaint();
 	}
-	
-	
 
+
+	public void receiveRegisterData(DataRegister data) {
+		loginPage.getRegisterDataFromClient(data);
+	}
+
+
+	public void receiveLoginData(DataLogin data) {
+		loginPage.getLoginDataFromClient(data);
+	}
+
+
+	public void receiveChatData(DataChat data) {
+		
+		chatPage.getChatDataFromClient(data);
+		
+	}
+	
 }

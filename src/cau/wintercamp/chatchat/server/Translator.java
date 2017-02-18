@@ -11,8 +11,6 @@ public class Translator {
 	public Data JSONstrToObj(String strData) {
 		
 		JSONParser parser = new JSONParser();
-		int type = 0;
-		
 		Data data = new Data();
 		
 		try {
@@ -20,9 +18,10 @@ public class Translator {
 			JSONObject objData = (JSONObject) parser.parse(strData);
 			
 			// type정보 추출
-			data.dataType = (int) objData.get("type");
+			data.dataType = ((Long)objData.get("type")).intValue();
+			Server.print("translator", "test  "+data.dataType);
 			
-			switch (type) {
+			switch (data.dataType) {
 			case DATATYPE_CHAT:
 				String roomId = (String) objData.get("room_id");
 				String message = (String) objData.get("message");
@@ -31,32 +30,38 @@ public class Translator {
 				break;
 
 			case DATATYPE_REGISTER:
-				String id = (String) objData.get("user_id");
-				String pw = (String) objData.get("user_pw");
-				boolean same = (boolean) objData.get("bool");
-				data = new Data();
+				String pw = objData.get("user_pw").toString();
+				String id = objData.get("user_id").toString();
+				boolean same = ((Long)objData.get("bool")).intValue() == 1 ? true : false;
 				data.dataRegister(id, pw, same);
 				break;
 				
 			case DATATYPE_LOGIN:
 				id = (String) objData.get("user_id");
 				pw = (String) objData.get("user_pw");
-				same = (boolean) objData.get("bool");
-				data = new Data();
+				same = ((Long)objData.get("bool")).intValue() == 1 ? true : false;
 				data.dataLogin(id, pw, same);
 				break;
 			}
 			
 		} catch (ParseException e) {
 			e.printStackTrace();
+			return null;
 		}
 		
 		return data;
 	}
 	
-	public void JSONbojToStr() {
-		
+	@SuppressWarnings("unchecked")
+	public String ObjToJSONStr(Data data) {
+		JSONObject json = new JSONObject();
+		json.put("type", data.dataType);
+		json.put("user_id", data.id);
+		json.put("user_pw", data.pw);
+		json.put("bool", data.same ? 1 : 0);
+		json.put("room_id", data.roomId);
+		json.put("message", data.message);
+		return json.toJSONString();
 	}
 	
-	//	public String DataToJSON()
 }

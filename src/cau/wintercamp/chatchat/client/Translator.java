@@ -51,22 +51,22 @@ public class Translator {
 		JSONObject jObject = new JSONObject();
 		
 		int type = data.getDataType();
-		jObject.put("type", type);
+		jObject.put("type", (int)type);
 		switch (type){
 		default: return null;
 		
 		case Data.DATATYPE_REGISTER:
 			DataRegister dataRegister = (DataRegister) data;
-			jObject.put("user_id", dataRegister.getUserId());
-			jObject.put("user_pw", dataRegister.getUserPw());
-			jObject.put("bool", dataRegister.getBool());
+			jObject.put("user_id", (String)dataRegister.getUserId());
+			jObject.put("user_pw", (String)dataRegister.getUserPw());
+			jObject.put("bool", dataRegister.getBool() ? 1 : 0);
 			break;
 			
 		case Data.DATATYPE_LOGIN:
 			DataLogin dataLogin = (DataLogin) data;
 			jObject.put("user_id", dataLogin.getUserId());
 			jObject.put("user_pw", dataLogin.getUserPw());
-			jObject.put("bool", dataLogin.getBool());
+			jObject.put("bool", dataLogin.getBool() ? 1 : 0);
 			break;
 			
 		case Data.DATATYPE_CHAT:

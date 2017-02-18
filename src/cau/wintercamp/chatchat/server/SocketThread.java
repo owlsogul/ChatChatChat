@@ -8,29 +8,47 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import org.json.simple.JSONObject;
-
 public class SocketThread implements Runnable{
 
+
+	/**
+	 * 클라이언트와 직접적으로 연결되어있는 객체<br>
+	 * 생성자에서 가져와진다
+	 * */
 	public Socket socket;
+
+	public Thread receiverThread;
+
+	/**
+	 * IO를 관리함 
+	 * */
 	public BufferedReader br;
 	public PrintWriter pw;
 
-	public SocketManager s_manager;
+	public ServerManager serverManager;
 
-	public SocketThread(Socket socket, SocketManager s_manager) {
+	public String userId = null;
+
+	public SocketThread(Socket socket, ServerManager serverManager) {
 
 		this.socket = socket;
-		this.s_manager = s_manager;
+		this.serverManager = serverManager;
+		this.receiverThread = new Thread(this);
+		
+
+		try {
+			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			pw = new PrintWriter(socket.getOutputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		this.receiverThread.start();
+
 	}
 
 	public void run() {
 
-		// 클라이언트로부터 데이터가 들어오면 
-		// ChatManager에 saveData() -> 데이터 저장, whereToGo() -> 데이터 처리해서 다시 어디로 보내야할 지 판별
-
-		// ChatManager로 부터 데이터 전달받으면
-		// sendData() -> 클라이언트들에게 데이터 재전송
 		while (true){
 			try {
 				receiveData();
@@ -39,41 +57,28 @@ public class SocketThread implements Runnable{
 				break;
 			}
 		}
-		
+
 
 	}
 
 	public void receiveData() throws IOException {
 
-		// 클라이언트로부터 JSON문자열 전송받으면 ChatManager로 전달
-		br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		String data = br.readLine();
+		Server.print("socket", "received " + br.ready() + data);
 		if (data != null) {
-
-			ChatManager c_manager = new ChatManager(data, s_manager);
+			serverManager.handlingData(this, data);
 		}
+		return;
 	}
 
+	// 굳이 여기서도 쓰레드를 만들어야하는지 의문이 들어 쓰레드를 만들지 않아보겠다.
 	public void sendData(String toClient) {
 
-		try {
-			Thread thread = new Thread(new Runnable() {
-				
-				@Override
-				public void run() {
-					try {
-						pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					pw.println(toClient);
-				}
-			});
-			thread.start();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		pw.println(toClient);
+		Server.print("socket", "send " + toClient);
+		pw.flush();
+		
+		return;
 	}
 
 	public void closeSocket() {
@@ -81,9 +86,9 @@ public class SocketThread implements Runnable{
 			br.close();
 			socket.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return;
 	}
 
 }

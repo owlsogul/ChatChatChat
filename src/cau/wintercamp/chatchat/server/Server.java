@@ -6,6 +6,10 @@ import java.net.Socket;
 
 public class Server {
 
+	public static void print(String prefix, String msg){
+		System.out.println(prefix + ":" + msg);
+	}
+	
 	public static Server mainServer;
 	public static void main(String[] args) {
 
@@ -15,19 +19,23 @@ public class Server {
 
 
 	
-	public SocketManager socketManager;
+	public ServerManager serverManager;
 	public ServerSocket serverSocket;
 	public Server(){
 		try {
 
 			serverSocket = new ServerSocket(7777);
+			serverManager = new ServerManager(this);
+			Server.print("server", "open server");
 
 			while(true) {
 				Socket socket = serverSocket.accept();
 
 				if (socket !=null) {
-					// 클라이언트로 부터 접속 요청이 들어오면 소켓을 생성 후 SocketManager로 socket전달
-					socketManager = new SocketManager();
+					serverManager.registerSocketToAccount(socket);
+					Server.print("server", "send socket to socekt manager");
+					socket = null;
+					Server.print("server", "wait to connect client");
 				}
 			}
 

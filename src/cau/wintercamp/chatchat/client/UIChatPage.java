@@ -54,26 +54,6 @@ public class UIChatPage extends UIPage implements ActionListener{
 		this.enterButton.addActionListener(this);
 		this.enterButton.setName("enter");
 		
-		Thread receiver = new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				System.out.println("Receiver Thread Run");
-				Data data = main.client.receiveData();
-				if (data instanceof DataChat){
-					DataChat chat = (DataChat) data;
-					System.out.println("receive chat data");
-					System.out.println(chat.getUserId() + ":" + chat.getMessage());
-					String msg = chat.getUserId() + ":" + chat.getMessage();
-					chatArea.append(msg);
-				}
-				else {
-					System.out.println("receive non chat data");
-				}
-			}
-		});
-		receiver.start();
-		System.out.println("Receiver Thread Start");
 	}
 
 	@Override
@@ -97,6 +77,14 @@ public class UIChatPage extends UIPage implements ActionListener{
 				}
 			}
 		}
+	}
+
+	public void getChatDataFromClient(DataChat chat) {
+		System.out.println("receive chat data");
+		System.out.println(chat.getUserId() + ":" + chat.getMessage());
+		String msg = chat.getUserId() + ":" + chat.getMessage();
+		chatArea.append(msg);
+		
 	}
 
 }
