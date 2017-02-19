@@ -29,4 +29,8 @@ public class Data {
 		this.pw = pw;
 		this.same = same;
 	}
+	
+	public void dataLogout(String id){
+		this.id = id;
+	}
 }

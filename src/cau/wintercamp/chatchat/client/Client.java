@@ -94,6 +94,8 @@ public class Client {
 		case Data.DATATYPE_CHAT:
 			this.uiMain.receiveChatData((DataChat)data);
 			return;
+		case Data.DATATYPE_LOGOUT:
+			this.uiMain.receiveLogoutData((DataLogout)data);
 		}
 	}
 	

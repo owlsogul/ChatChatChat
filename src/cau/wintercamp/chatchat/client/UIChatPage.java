@@ -59,6 +59,8 @@ public class UIChatPage extends UIPage implements ActionListener{
 		
 		this.enterButton.addActionListener(this);
 		this.enterButton.setName("enter");
+		this.logoutButton.addActionListener(this);
+		this.logoutButton.setName("logout");
 		
 	}
 
@@ -84,6 +86,19 @@ public class UIChatPage extends UIPage implements ActionListener{
 					chatField.setText("");
 				}
 			}
+			else if (button.getName().equals("logout")){
+				DataLogout data = new DataLogout(userId);
+				Thread thread = new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						System.out.println("Sending Thread: Start");
+						main.client.sendData(data);
+						System.out.println("Sending Thread: Success Send Logout Message");
+					}
+				});
+				thread.start();
+			}
 		}
 	}
 
@@ -92,7 +107,5 @@ public class UIChatPage extends UIPage implements ActionListener{
 		System.out.println(chat.getUserId() + ":" + chat.getMessage());
 		String msg = chat.getUserId() + ":" + chat.getMessage() + "\n";
 		chatArea.append(msg);
-		
 	}
-
 }

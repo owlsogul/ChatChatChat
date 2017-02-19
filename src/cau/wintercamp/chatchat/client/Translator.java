@@ -38,6 +38,11 @@ public class Translator {
 				String userId = (String) jObject.get("user_id");
 				DataChat dataChat = new DataChat(roomId, message, userId);
 				return dataChat;
+				
+			case Data.DATATYPE_LOGOUT:
+				userId = (String) jObject.get("user_id");
+				DataLogout dataLogout = new DataLogout(userId);
+				return dataLogout;
 			}
 
 		} catch (ParseException e) {
@@ -74,6 +79,10 @@ public class Translator {
 			jObject.put("room_id", dataChat.getRoomId());
 			jObject.put("message", dataChat.getMessage());
 			jObject.put("user_id", dataChat.getUserId());
+			break;
+		case Data.DATATYPE_LOGOUT:
+			DataLogout dataLogout = (DataLogout) data;
+			jObject.put("user_id", dataLogout.getUserId());
 			break;
 		}
 		

@@ -6,7 +6,7 @@ import org.json.simple.parser.ParseException;
 
 public class Translator {
 
-	public static final int DATATYPE_CHAT = 0, DATATYPE_LOGIN = 1, DATATYPE_REGISTER = 2;
+	public static final int DATATYPE_CHAT = 0, DATATYPE_LOGIN = 1, DATATYPE_REGISTER = 2, DATATYPE_LOGOUT = 3;
 	
 	public Data JSONstrToObj(String strData) {
 		
@@ -41,6 +41,11 @@ public class Translator {
 				pw = (String) objData.get("user_pw");
 				same = ((Long)objData.get("bool")).intValue() == 1 ? true : false;
 				data.dataLogin(id, pw, same);
+				break;
+			
+			case DATATYPE_LOGOUT:
+				id = (String) objData.get("user_id");
+				data.dataLogout(id);
 				break;
 			}
 			

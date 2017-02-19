@@ -64,6 +64,10 @@ public class DataManager {
 			// 일단 메인 채팅룸으로 보낸다
 			serverManager.sendChatMessage(ServerManager.ADMINROOM_MAIN, translator.ObjToJSONStr(data));
 			return;
+		
+		case Translator.DATATYPE_LOGOUT:
+			Server.print("data manager", "log out");
+			serverManager.logout(socketThread, data.id, translator.ObjToJSONStr(data));
 		}
 
 	}

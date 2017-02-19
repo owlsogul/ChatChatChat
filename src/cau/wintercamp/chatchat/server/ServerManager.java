@@ -115,6 +115,26 @@ public class ServerManager{
 			}
 		}
 	}
+
+	public void logout(SocketThread socketThread, String userId, String objToJSONStr) {
+		Iterator<String> iterator = connectedSocket.keySet().iterator();
+		while (iterator.hasNext()){
+			String key = iterator.next();
+			if (key.equals(ADMINROOM_ACCOUNT)){
+				continue;
+			}
+			ArrayList<SocketThread> list = connectedSocket.get(key);
+			for (int i = 0;i < list.size(); i++){
+				if (list.get(i) == socketThread){
+					Server.print("server manager", userId + " 가 로그아웃 했어요");
+					connectedSocket.get(ADMINROOM_ACCOUNT).add(list.get(i));
+					list.remove(i);
+					System.out.println(connectedSocket.get(key).size());
+					return;
+				}
+			}
+		}
+	}
 	
 	
 	

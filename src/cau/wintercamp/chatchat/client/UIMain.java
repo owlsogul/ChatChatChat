@@ -87,5 +87,19 @@ public class UIMain extends JFrame{
 		chatPage.getChatDataFromClient(data);
 		
 	}
+
+
+	public void receiveLogoutData(DataLogout data) {
+		this.getContentPane().remove(chatPage);
+		this.chatPage = null;
+		this.userId = null;
+		
+		this.loginPage = new UILoginPage(this);
+		this.getContentPane().add(loginPage);
+		
+		this.revalidate();
+		this.repaint();
+		
+	}
 	
 }
