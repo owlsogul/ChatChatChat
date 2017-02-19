@@ -3,29 +3,38 @@ package cau.wintercamp.chatchat.server;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class ServerManager{
 	
 	/** 관리자용 방이름 */
 	
+	/** 로그인/회원가입 절차를 밟고 있는 유저들이 있는 방 */
 	public static final String ADMINROOM_ACCOUNT = "ADIMROOM_ACCOUNT";
+	/** 현재는 테스트용. 메인 방*/
 	public static final String ADMINROOM_MAIN = "ADMINROOM_MAIN";
 	
 	public Server server;
+	/** 데이터 번역, 분석를 위한 객체 */
 	public DataManager dataManager;
+	/** 계정 관련 데이터를 처리하기 위한 객체  */
 	public AccountManager accountManager;
 	public ServerManager(Server server){
 		this.server = server;
 		init();
 	}
 	
-	
+	/**
+	 * 소켓들이 저장되어있는 해쉬맵. key 값으로 방이름, value로는 연결된 모든 소켓들의 리스트를 가진다.
+	 * */
 	public HashMap<String, ArrayList<SocketThread>> connectedSocket;
 	public void init(){
 		
+		// 각종 메니저들 초기화
 		this.dataManager = new DataManager(this);
 		this.accountManager = new AccountManager(this);
 		
+		// 커택티드소켓 초기화
 		connectedSocket = new HashMap<>();
 		connectedSocket.put(ADMINROOM_ACCOUNT, new ArrayList<SocketThread>());
 		connectedSocket.put(ADMINROOM_MAIN, new ArrayList<SocketThread>());
@@ -69,6 +78,9 @@ public class ServerManager{
 		}
 	}
 	
+	/**
+	 * 로그인이 실패하였을 때 호출되는 함수
+	 * */
 	public void failLogin(SocketThread socketThread, String objToJSONStr) {
 		socketThread.sendData(objToJSONStr);
 		Server.print("server manager", "fail login client of " +  socketThread.socket.getInetAddress().toString());
@@ -86,6 +98,22 @@ public class ServerManager{
 	public void sendRegisterResult(SocketThread socketThread, String objToJSONStr) {
 		socketThread.sendData(objToJSONStr);
 		Server.print("server manager", "register message sended " + objToJSONStr);
+	}
+
+	public void disconnectSocket(SocketThread socketThread) {
+		Iterator<String> iterator = connectedSocket.keySet().iterator();
+		while (iterator.hasNext()){
+			String key = iterator.next();
+			ArrayList<SocketThread> list = connectedSocket.get(key);
+			for (int i = 0;i < list.size(); i++){
+				if (list.get(i) == socketThread){
+					Server.print("server manager", socketThread.socket.getInetAddress().toString() + " 와 연결이 끊어졌습니다");
+					list.remove(i);
+					System.out.println(connectedSocket.get(key).size());
+					return;
+				}
+			}
+		}
 	}
 	
 	

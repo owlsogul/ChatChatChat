@@ -52,7 +52,7 @@ public class SocketThread implements Runnable{
 			try {
 				receiveData();
 			} catch (IOException e) {
-				e.printStackTrace();
+				this.serverManager.disconnectSocket(this);
 				break;
 			}
 		}
