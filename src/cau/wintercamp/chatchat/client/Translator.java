@@ -73,7 +73,7 @@ public class Translator {
 			DataChat dataChat = (DataChat) data;
 			jObject.put("room_id", dataChat.getRoomId());
 			jObject.put("message", dataChat.getMessage());
-			jObject.put("user_id", dataChat.getMessage());
+			jObject.put("user_id", dataChat.getUserId());
 			break;
 		}
 		

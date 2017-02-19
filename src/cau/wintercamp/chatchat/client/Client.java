@@ -56,6 +56,11 @@ public class Client {
 					} catch (IOException e) {
 						//e.printStackTrace();
 					}
+					try {
+						Thread.sleep(3000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
 				System.out.println("try to change page");
 				client.uiMain.loadingComplete();
