@@ -5,7 +5,6 @@ public class Data {
 	int dataType;
 	String roomId;
 	String message;
-	String userId;
 	boolean same;
 	String id;
 	String pw;
@@ -16,7 +15,7 @@ public class Data {
 		
 		this.roomId = roomId;
 		this.message = message;
-		this.userId = userId;
+		this.id = userId;
 	}
 	
 	public void dataRegister(String id, String pw, boolean same){

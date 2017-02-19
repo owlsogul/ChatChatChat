@@ -22,7 +22,7 @@ public class Client {
 	public Translator translator;
 	public boolean isConnected = false;
 	
-	public String ip = "localhost";
+	public String ip = "165.194.17.96";
 	public int port = 7777;
 	
 	public Client(){
