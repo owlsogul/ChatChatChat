@@ -53,6 +53,7 @@ public class SocketIO implements Runnable{
 			System.out.println("SocketIO: Read " + ret);
 			return ret;
 		} catch (IOException e) {
+			
 			e.printStackTrace();
 			return null;
 		}
