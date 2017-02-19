@@ -118,6 +118,7 @@ public class ServerManager{
 
 	public void logout(SocketThread socketThread, String userId, String objToJSONStr) {
 		Iterator<String> iterator = connectedSocket.keySet().iterator();
+		
 		while (iterator.hasNext()){
 			String key = iterator.next();
 			if (key.equals(ADMINROOM_ACCOUNT)){
@@ -130,6 +131,7 @@ public class ServerManager{
 					connectedSocket.get(ADMINROOM_ACCOUNT).add(list.get(i));
 					list.remove(i);
 					System.out.println(connectedSocket.get(key).size());
+					socketThread.sendData(objToJSONStr);
 					return;
 				}
 			}

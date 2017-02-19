@@ -69,6 +69,7 @@ public class UIChatPage extends UIPage implements ActionListener{
 		if (event.getSource() instanceof JButton){
 			JButton button = (JButton) event.getSource();
 			if (button.getName().equals("enter")){
+				//TODO: 로그아웃 버튼 누른다음에는 입력 못하게 하기
 				System.out.println("User press enter button");
 				String text = chatField.getText();
 				if (text.length() > 0){

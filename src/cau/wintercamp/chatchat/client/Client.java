@@ -23,8 +23,8 @@ public class Client {
 	public boolean isConnected = false;
 	
 	
-	public String ip = "localhost";
-	//public String ip = "165.194.17.96";
+	//public String ip = "localhost";
+	public String ip = "165.194.17.96";
 	public int port = 7777;
 	
 	public Client(){
