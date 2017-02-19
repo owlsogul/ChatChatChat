@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -23,6 +24,7 @@ public class UIChatPage extends UIPage implements ActionListener{
 	public JLabel idLabel;
 	public JButton logoutButton;
 	public JTextArea chatArea;
+	public JScrollPane scrollPane;
 	public JTextField chatField;
 	public JButton enterButton;
 	
@@ -36,6 +38,7 @@ public class UIChatPage extends UIPage implements ActionListener{
 		chatArea = new JTextArea();
 		chatField = new JTextField();
 		enterButton = new JButton("ют╥б");
+		scrollPane = new JScrollPane(chatArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
 		titleLabel.setBounds(10,10,80,20);
 		idLabel.setBounds(150, 10, 150, 20);
@@ -43,11 +46,14 @@ public class UIChatPage extends UIPage implements ActionListener{
 		chatArea.setBounds(10, 35, 380, 270);
 		chatField.setBounds(10, 310, 300, 40);
 		enterButton.setBounds(320, 310, 70, 40);
+		scrollPane.setBounds(5, 35, 380, 270);
+		
+		chatArea.setEditable(false);
 		
 		this.add(titleLabel);
 		this.add(idLabel);
 		this.add(logoutButton);
-		this.add(chatArea);
+		this.add(scrollPane);
 		this.add(chatField);
 		this.add(enterButton);
 		
@@ -62,8 +68,9 @@ public class UIChatPage extends UIPage implements ActionListener{
 			JButton button = (JButton) event.getSource();
 			if (button.getName().equals("enter")){
 				System.out.println("User press enter button");
-				if (chatField.getText().length() > 0){
-					DataChat data = new DataChat("room", chatField.getText(), userId);
+				String text = chatField.getText();
+				if (text.length() > 0){
+					DataChat data = new DataChat("room", text, userId);
 					Thread thread = new Thread(new Runnable() {
 						
 						@Override
@@ -74,6 +81,7 @@ public class UIChatPage extends UIPage implements ActionListener{
 						}
 					});
 					thread.start();
+					chatField.setText("");
 				}
 			}
 		}
