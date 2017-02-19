@@ -82,7 +82,7 @@ public class UIChatPage extends UIPage implements ActionListener{
 	public void getChatDataFromClient(DataChat chat) {
 		System.out.println("receive chat data");
 		System.out.println(chat.getUserId() + ":" + chat.getMessage());
-		String msg = chat.getUserId() + ":" + chat.getMessage();
+		String msg = chat.getUserId() + ":" + chat.getMessage() + "\n";
 		chatArea.append(msg);
 		
 	}
