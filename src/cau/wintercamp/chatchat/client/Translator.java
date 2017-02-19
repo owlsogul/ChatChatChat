@@ -14,21 +14,21 @@ public class Translator {
 
 			JSONObject jObject = (JSONObject) parser.parse(json_str);
 
-			int type = (int) jObject.get("type");
+			int type = ((Long) jObject.get("type")).intValue();
 			switch (type){
 			
 			default: return null;
 			case Data.DATATYPE_REGISTER:
 				String id = (String) jObject.get("user_id");
 				String pw = (String) jObject.get("user_pw");
-				boolean same = (int) jObject.get("bool") == 1 ? true : false;
+				boolean same = ((Long) jObject.get("bool")).intValue() == 1 ? true : false;
 				DataRegister dataRegister = new DataRegister(id, pw, same);
 				return dataRegister;
 				
 			case Data.DATATYPE_LOGIN:
 				id = (String) jObject.get("user_id");
 				pw = (String) jObject.get("user_pw");
-				same = (int) jObject.get("bool") == 1 ? true : false;
+				same = ((Long) jObject.get("bool")).intValue() == 1 ? true : false;
 				DataLogin dataLogin = new DataLogin(id, pw, same);
 				return dataLogin;
 				
